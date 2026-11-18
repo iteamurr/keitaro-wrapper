@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кампании · Keitaro Wrapper</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body data-campaign-id="{{ campaign_id }}">
+  <a class="skip-link" href="#main">К содержимому</a>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="Keitaro Wrapper — кампании"><svg width="25" height="25" viewBox="0 0 25 25" aria-hidden="true"><path d="M4 4v17M4 12h8l8-8M12 12l8 9" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>Keitaro <span>Wrapper</span></a>
+    <div class="connection" id="connection">Подключение…</div>
+  </header>
+  <main id="main" class="workspace">
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <div id="pending" class="notice warning" hidden></div>
+    {% if not campaign_id %}
+    <div class="page-heading"><div><h1>Кампании</h1><p>Подготовьте изменения. Публикуйте, когда всё готово.</p></div><span class="quiet-label">Локальный редактор</span></div>
+    <div class="home-layout">
+      <section class="campaign-register" aria-labelledby="list-title">
+        <div class="section-title"><h2 id="list-title">Ваш рабочий список</h2><button type="button" class="text-button" id="reload">Обновить</button></div>
+        <form id="import-form" class="import-form"><label for="campaign-id">Открыть из Keitaro</label><div class="inline-fields"><input id="campaign-id" name="keitaro_campaign_id" type="number" min="1" step="1" placeholder="ID кампании" required><button type="submit" class="secondary">Получить потоки</button></div></form>
+        <div id="campaign-list" aria-live="polite"><p class="empty">Загрузка списка…</p></div>
+      </section>
+      <aside class="create-panel" aria-labelledby="create-title">
+        <h2 id="create-title">Новая кампания</h2><p class="muted">Геопоток на Google и поток выбранного оффера.</p>
+        <form id="create-form">
+          <label for="name">Название</label><input id="name" name="name" maxlength="200" required placeholder="Название кампании">
+          <small id="prefix-note"></small>
+          <label for="country">Страна геопотока</label><select id="country" name="country_code" required><option value="">Выберите страну</option></select>
+          <div class="offer-picker"><label for="create-query">Оффер</label><input id="create-query" class="offer-query" type="search" placeholder="Поиск по названию или ID" autocomplete="off"><select name="offer_id" aria-label="Выбранный оффер" required><option value="">Начните поиск</option></select><small class="search-status" aria-live="polite"></small></div>
+          <button class="primary full-width" type="submit">Создать кампанию</button>
+          <p class="form-note" id="create-note">Домен, группа и источник заданы в настройках.</p>
+        </form>
+      </aside>
+    </div>
+    {% else %}
+    <a class="back-link" href="/">Все кампании</a>
+    <div class="page-heading"><div><h1 id="campaign-title">Загрузка кампании…</h1><p id="campaign-meta">Получаем сохранённое состояние редактора.</p><a id="campaign-link" hidden target="_blank" rel="noopener noreferrer">Открыть ссылку кампании</a></div><div class="heading-actions"><button class="secondary" id="refresh-local">Обновить экран</button><button class="primary" id="fetch">Fetch Streams</button></div></div>
+    <p id="fetch-note" class="form-note" hidden></p>
+    <p class="publication-note">Изменения сохраняются здесь. В Keitaro они попадут только после <strong>Push to KT</strong>.</p>
+    <div id="streams" aria-live="polite"></div>
+    <section id="operations" class="operations" aria-labelledby="operations-title"><h2 id="operations-title">Операции</h2><div id="operation-list"></div></section>
+    {% endif %}
+  </main>
+  <footer class="footer"><span>Keitaro Wrapper</span><span>Черновик → проверка → публикация</span></footer>
+</body>
+</html>
