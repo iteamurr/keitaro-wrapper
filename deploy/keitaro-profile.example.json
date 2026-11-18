@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "origin": "https://tracker.example.invalid",
+  "verified": false,
+  "geo": {
+    "schema": "redirect",
+    "action_type": "http",
+    "action_payload": "https://google.com",
+    "filters": [
+      {"name": "country", "mode": "accept", "payload": ["{{country}}"]}
+    ]
+  },
+  "fallback": {
+    "schema": "landings",
+    "action_type": "http",
+    "landings": [],
+    "filters": [],
+    "offer_selection": "before_click"
+  }
+}

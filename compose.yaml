@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: keitaro_wrapper
+      POSTGRES_USER: wrapper
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wrapper -d keitaro_wrapper"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  app:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://wrapper:${POSTGRES_PASSWORD}@db:5432/keitaro_wrapper
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:
